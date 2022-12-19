@@ -44,15 +44,22 @@ With Picsellia 🥑, this is no longer the case!
 
 ### 1. Upload your data to the Datalake 
 
-![datalake]("./docs/datalake.png")
-
 By storing all your data in the Datalake, you can take advantage from the following features:
 - Visualize all your data and have an overview on its metadata.
 - Search easily by using tags and Picsellia's querying language.
 - Filter and modify your data easily via the UI.
 - Import your data from a third party data storage service. 
 
+![datalake](/docs/datalake.png)
 
+You can upload your data to the Datalake in two ways: 
+- Via Picsellia platform UI by navigating to the Datalake tab and following the steps after clicking the button **upload data**. 
+- Via Picsellia's Python SDK by running the following command in your terminal: 
+````
+python upload_data.py
+````
+
+If you choose to upload your data via the sdk, take into account to update the `config.py` file. In the [config.py](config.py) file you can precise the path to your data (e.g train, test, val) in your local machine, and the tags you want to use to identify your uploaded data. 
 
 
 
