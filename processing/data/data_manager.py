@@ -1,12 +1,12 @@
 from pathlib import Path
 from typing import List, Union
 
-from picsellia.client import Client
+from loguru import logger
+from picsellia import Client
 from picsellia.sdk.data import Data, MultiData
 
 
 def upload_data_to_datalake_with_tags(
-    *,
     client: Client,
     folder_path: Path, 
     tags: Union[str, List[str]]
@@ -20,9 +20,8 @@ def upload_data_to_datalake_with_tags(
     datalake = client.get_datalake()
     # Path to the images that will be uploaded to the Datalake
     images = [str(path) for path in folder_path.glob("*.jpg")]
-    print(folder_path)
-    print(type(folder_path))
-    print(images)
+    logger.info(folder_path)
+    logger.info(images)
     # Upload data to Datalake 
     data = datalake.upload_data(filepaths=images)
 
