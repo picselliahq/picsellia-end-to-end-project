@@ -32,10 +32,10 @@ ENERGY_TIFFIN_TAG = "Energy_Tiffin"
 DATASET_NAME = "conveyor-belt-dataset"
 DATASET_DESCRIPTION = "Carton type detection dataset with images from a conveyor belt"
 NB_OF_DATA = None
-TAGS = ["Cartons", "test"]
+TAGS = ["Cartons", "valid"]
 
 # Dataset version
-DATASET_VERSION = "test"
-DATASET_VERSION_DESCRIPTION = "testing version"
+DATASET_VERSION = "valid"
+DATASET_VERSION_DESCRIPTION = "validation version"
 DATASET_TYPE = InferenceType.OBJECT_DETECTION
 LABELS = ["Energy_Tiffin","Energy_Regular"] 

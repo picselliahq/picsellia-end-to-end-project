@@ -6,6 +6,7 @@ from picsellia import Client
 from picsellia.exceptions import ResourceNotFoundError
 from picsellia.sdk.data import Data, MultiData
 from picsellia.sdk.dataset import Dataset, DatasetVersion
+from picsellia.sdk.datalake import Datalake
 from picsellia.sdk.label import Label
 from picsellia.types.enums import InferenceType
 
@@ -63,6 +64,25 @@ def create_dataset_version(
         dataset_version = dataset.create_version(version=version, description=description)
     return dataset_version
 
+def retrieve_data_with_tags(
+    datalake: Datalake,
+    tags: Union[str, List[str]]
+    ) -> MultiData:
+    if not tags:
+        raise RuntimeError(f"{tags} should not be empty")
+
+    k = 0
+    my_data = datalake.list_data(tags=tags[0])
+    while k < len(tags) and len(my_data.items) > 0:
+        retrieved_data = datalake.list_data(tags=tags[k]).items
+        for data in my_data:
+            if data not in retrieved_data:
+                my_data.items.remove(data)
+
+        k += 1
+
+    return my_data
+
 def add_data_to_dataset(
     client: Client,
     dataset_version: DatasetVersion,
@@ -78,8 +98,8 @@ def add_data_to_dataset(
     # Get Datalake
     datalake = client.get_datalake()
     # Fetch data from the Datalake to be used in your dataset
-    data = datalake.list_data(limit=nb_of_data, tags=tags)
-
+    #data = datalake.list_data(limit=nb_of_data, tags=tags)
+    data = retrieve_data_with_tags(datalake, tags)
     # Adding data to dataset is a time intensive task. 
     # Therefore it is recommended to run it asynchronously. 
     job = dataset_version.add_data(data)

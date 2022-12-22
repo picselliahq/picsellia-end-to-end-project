@@ -1,14 +1,9 @@
 from picsellia import Client
-import config 
 
-
-from processing.data.data_manager import (
-    create_dataset_version,
-    create_dataset,
-    add_data_to_dataset,
-    add_labels
-) 
-
+import config
+from processing.data.data_manager import (add_data_to_dataset, add_labels,
+                                          create_dataset,
+                                          create_dataset_version)
 
 if __name__ == "__main__":
     # Connect to Picsellia 
@@ -16,7 +11,6 @@ if __name__ == "__main__":
     api_token=config.API_TOKEN,
     organization_id=config.ORGANIZATION_ID
     )
-
 
     # Create a dataset 
     dataset = create_dataset(

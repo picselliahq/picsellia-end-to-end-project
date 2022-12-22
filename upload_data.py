@@ -1,9 +1,4 @@
-import os
-from pathlib import Path
-from typing import List
-
 from picsellia import Client
-from picsellia.sdk.datalake import Tag
 
 import config
 from processing.data.data_manager import upload_data_to_datalake_with_tags
