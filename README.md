@@ -11,9 +11,9 @@ The following are the steps which are covered within this project:
 
 ## Setup a virtual environment 
 
-In order to isolate the dependencies used in this project, we recommend setting up a Python virtual environment to run this project. 
+In order to isolate the dependencies used in this project, setting up a Python virtual environment to run this projects recommended. 
 
-Run the following command in your project folder: 
+Run the following commands in your project folder: 
 
 ```shell
 cd project_folder
@@ -28,8 +28,8 @@ source myvenv/bin/activate
 
 ## Setup the environment variables 
 
-Create a `.env` file in the root directory of this project and add to it your API Token. 
-You can retrieve it in your profile page on Picsellia. 
+Create a `.env` file in the root directory of this project and add to it your **API_TOKEN** 
+that you can retrieve it in your profile page on Picsellia and your **ORGANIZATION_ID** that you can retrieve from the url in the browser in this format: https://app.picsellia.com/ORGANIZATION_ID/dashboard
 
 ```
 API_TOKEN="YOUR_API_TOKEN"
@@ -60,6 +60,40 @@ python upload_data.py
 ````
 
 If you choose to upload your data via the sdk, take into account to update the `config.py` file. In the [config.py](config.py) file you can precise the path to your data (e.g train, test, val) in your local machine, and the tags you want to use to identify your uploaded data. 
+
+### 2. Create a dataset with data from the Datalake
+
+You will now create a dataset with the data that you need from your Datalake. 
+Since you have added tags when uploading your data to the Datalake, now you can leverage the capabilities of retrieving data with the tags, to create respective dataset versions e.g **train** version, **test** version and **valid** version. 
+
+To do that, you can follow either of the following ways: 
+- Through Picsellia's platform UI using the **query language** to select data with the tags that you precise and then by clicking on create dataset as shown below:
+
+![create dataset](/docs/create_dataset.png)
+
+- Via Picsellia's Python SDK by doing the necessary configuration in the [config.py](config.py) file. The most important configurations to note are the **TAGS**, **DATASET_VERSION**, **DATASET_TYPE**, **LABELS**: 
+````python
+# Dataset 
+DATASET_NAME = "your-dataset-name"
+DATASET_DESCRIPTION = "you dataset description"
+NB_OF_DATA = <number of data to retrieve> 
+TAGS = ["tag1", "tag2"]
+
+# Dataset version
+DATASET_VERSION = "train"
+DATASET_VERSION_DESCRIPTION = "training version"
+DATASET_TYPE = InferenceType.OBJECT_DETECTION
+LABELS = ["label1","label2"]
+````
+- Then, running the following command in your terminal as many times as you need to create your different dataset versions after changing the configuration in each time you run it:
+````shell
+python create_dataset.py
+````
+After doing the described steps to create three dataset versions: **train**, **test** and **valid**, this is the result you should get by navigating to the **Datasets** tab on Picsellia:
+
+ ![datasets](/docs/datasets.png)
+
+
 
 
 
