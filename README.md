@@ -36,13 +36,13 @@ API_TOKEN="YOUR_API_TOKEN"
 ORGANIZATION_ID="YOUR_ORGANIZATION_ID"
 ```
 
-## 💾 Data management 
+# 💾 Data management 
 
 In Computer Vision projects, data management is the most time consuming step. 
 
 With Picsellia 🥑, this is no longer the case! 
 
-### 1. Upload your data to the Datalake 
+## 1. Upload your data to the Datalake 
 
 By storing all your data in the Datalake, you can take advantage from the following features:
 - Visualize all your data and have an overview on its metadata.
@@ -61,7 +61,7 @@ python upload_data.py
 
 If you choose to upload your data via the sdk, take into account to update the `config.py` file. In the [config.py](config.py) file you can precise the path to your data (e.g train, test, val) in your local machine, and the tags you want to use to identify your uploaded data. 
 
-### 2. Create a dataset with data from the Datalake
+## 2. Create a dataset with data from the Datalake
 
 You will now create a dataset with the data that you need from your Datalake. 
 Since you have added tags when uploading your data to the Datalake, now you can leverage the capabilities of retrieving data with the tags, to create respective dataset versions e.g **train** version, **test** version and **valid** version. 
@@ -100,7 +100,7 @@ After doing the described steps to create three dataset versions: **train**, **t
 
 ![datasets](/docs/datasets.png)
 
-### 3. Annotation 
+## 3. Annotation 
 
 Once you have created your dataset and the different dataset versions you need, at that point, you do not have the annotations yet.  
 
@@ -123,9 +123,38 @@ Once your dataset is fully annotated, you can leverage the **Analytics tab** to 
 
 ![annotation](/docs/dataset_analytics.png)
 
+# 📈 Model training & monitoring
 
+After completing the data management workflow, you should be all set to create your project and start launching training experiments. 
 
+## 1. Create a project 
 
+To grant that you have an overview on the different experiments, you start by creating a project by navigating to the **Projects tab** as shown below: 
+
+![create_project](/docs/create_project.png)
+
+Click on **New project** and fill in the needed information and add from your team who you want to collaborate with to work on this project, as shown below: 
+
+![project](/docs/project.png)
+
+## 2. Attach a dataset to your project 
+Once you have created your project, the first thing you need to do it to attach a dataset to it by choosing a dataset version to run your experiments on. You can do that by navigating to your project interface as shown below: 
+
+![attach_dataset](/docs/attach_dataset.png)
+
+## 3. Create experiments
+
+An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
+
+to create an experiment, navigate to your project interface and add a new experiment as shown below: 
+
+![create_experiment](/docs/create_experiment.png)
+
+Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
+
+After filling the form, you should have such result as shown below: 
+
+![experiment](/docs/experiment.png)
 
 
 
