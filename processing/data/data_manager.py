@@ -8,7 +8,7 @@ from picsellia.sdk.data import Data, MultiData
 from picsellia.sdk.datalake import Datalake
 from picsellia.sdk.dataset import Dataset, DatasetVersion
 from picsellia.sdk.label import Label
-from picsellia.types.enums import InferenceType
+from picsellia.types.enums import ImportAnnotationMode, InferenceType
 
 
 def upload_data_to_datalake_with_tags(
@@ -131,4 +131,16 @@ def add_labels(
     labels = [dataset_version.get_or_create_label(name=label) for label in labels]
     return labels
 
+
+def import_annotations(
+    client: Client,
+    dataset_version: DatasetVersion,
+    annotation_file_path: str,
+    annotation_file_type: str,
+    mode: ImportAnnotationMode
+    ):
+    """
+    Import annotation(s) file(s) to your dataset.
+    The supported annotation file formats are COCO and Pascal Voc.
+    """
 

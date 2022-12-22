@@ -67,7 +67,7 @@ You will now create a dataset with the data that you need from your Datalake.
 Since you have added tags when uploading your data to the Datalake, now you can leverage the capabilities of retrieving data with the tags, to create respective dataset versions e.g **train** version, **test** version and **valid** version. 
 
 To do that, you can follow either of the following ways: 
-- Through Picsellia's platform UI using the **query language** to select data with the tags that you precise and then by clicking on create dataset as shown below:
+- Through Picsellia's platform UI using the **query language** to select data with the tags that you precise and then by clicking on **Create dataset** as shown below:
 
 ![create dataset](/docs/create_dataset.png)
 
@@ -98,7 +98,45 @@ DATASET_TYPE = InferenceType.OBJECT_DETECTION
 
 After doing the described steps to create three dataset versions: **train**, **test** and **valid**, this is the result you should get by navigating to the **Datasets** tab on Picsellia:
 
- ![datasets](/docs/datasets.png)
+![datasets](/docs/datasets.png)
+
+### 3. Annotation 
+
+Once you have created your dataset and the different dataset versions you need, at that point, you do not have the annotations yet.  
+
+So two cases could be possible here: 
+-  **If you have the annotations:** 
+Supposing that you have the annotation files available on your local machine respective to the dataset versions you have created. You could simply upload them via Picsellia's platform UI as shown below, by navigating to the dataset version and clicking on the button **Annotations** then **Import annotations** 
+
+![annotation](/docs/import_annotations.png)
+
+ - **If you do not have the annotations:**
+  Picsellia has its annotation tool. You could easily use it to annotate your data from scratch. By navigating to the dataset version, once you hover on an image, you can click on **Annotate** and you will by landing on the annotation tool. But first, make sure to set the labels before you do the annotations by navigating to the **settings** tab in the dataset version you are in and add the labels as shown below: 
+
+![annotation](/docs/labels.png)
+
+Then you will be able to annotate as shown below: 
+
+![annotation](/docs/annotation_tool.png)
+
+Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc. as shown below: 
+
+![annotation](/docs/dataset_analytics.png)
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
 
 
 
