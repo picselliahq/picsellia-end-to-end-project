@@ -89,6 +89,13 @@ LABELS = ["label1","label2"]
 ````shell
 python create_dataset.py
 ````
+
+One thing to note about the **DATASET_TYPE** is that Picsellia supports the following types: `"CLASSIFICATION"`, `"LINE"`, `"MULTI"`, `"POINT"`, `"SEGMENTATION"`, `"OBJECT_DETECTION"` or `"NOT_CONFIGURED"`. So make sure to choose the appropriate type to the task you want to perform with your dataset. To do that, you can edit the [config.py](config.py) file. As an example as shown below the `InferenceType` is OBJECT_DETECTION: 
+
+````python
+DATASET_TYPE = InferenceType.OBJECT_DETECTION
+````
+
 After doing the described steps to create three dataset versions: **train**, **test** and **valid**, this is the result you should get by navigating to the **Datasets** tab on Picsellia:
 
  ![datasets](/docs/datasets.png)
