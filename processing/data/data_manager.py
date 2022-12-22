@@ -3,10 +3,10 @@ from typing import List, Union
 
 from loguru import logger
 from picsellia import Client
-from picsellia.exceptions import ResourceNotFoundError
+from picsellia.exceptions import NoDataError, ResourceNotFoundError
 from picsellia.sdk.data import Data, MultiData
-from picsellia.sdk.dataset import Dataset, DatasetVersion
 from picsellia.sdk.datalake import Datalake
+from picsellia.sdk.dataset import Dataset, DatasetVersion
 from picsellia.sdk.label import Label
 from picsellia.types.enums import InferenceType
 
@@ -64,24 +64,34 @@ def create_dataset_version(
         dataset_version = dataset.create_version(version=version, description=description)
     return dataset_version
 
+
 def retrieve_data_with_tags(
     datalake: Datalake,
     tags: Union[str, List[str]]
-    ) -> MultiData:
+    ) -> Union[Data, MultiData]:
+    """ Retrieve data from the Datalake by tags """
+
     if not tags:
         raise RuntimeError(f"{tags} should not be empty")
 
-    k = 0
-    my_data = datalake.list_data(tags=tags[0])
-    while k < len(tags) and len(my_data.items) > 0:
-        retrieved_data = datalake.list_data(tags=tags[k]).items
-        for data in my_data:
-            if data not in retrieved_data:
-                my_data.items.remove(data)
-
+    k = 1
+    intersect_data = {data.id: data for data in datalake.list_data(tags=tags[0])}
+    while k < len(tags) and len(intersect_data) > 0:
+        retrieved_data = [data.id for data in datalake.list_data(tags=tags[k]).items]
         k += 1
+        
+        for id_data in list(intersect_data.keys()):
+            if id_data not in retrieved_data:
+                del intersect_data[id_data]
 
-    return my_data
+    intersect_data = list(intersect_data.values())
+    if not intersect_data:
+        raise NoDataError()
+    elif len(intersect_data) == 1:
+        return intersect_data[0]
+    else:
+        return MultiData(intersect_data[0].connexion, intersect_data[0].datalake_id, intersect_data)
+
 
 def add_data_to_dataset(
     client: Client,
@@ -90,15 +100,16 @@ def add_data_to_dataset(
     tags: Union[str, List[str]],
     dataset_type: InferenceType 
     ):
-    """ Add data from the Datalake to a dataset version.
-        You can choose a limited number of data by using tags 
-        to be added to your dataset.
+    """ 
+    Add data from the Datalake to a dataset version.
+    You can choose a limited number of data by using tags 
+    to be added to your dataset.
     """
 
     # Get Datalake
     datalake = client.get_datalake()
+    logger.info(f"The data your are retrieving have these {tags}")
     # Fetch data from the Datalake to be used in your dataset
-    #data = datalake.list_data(limit=nb_of_data, tags=tags)
     data = retrieve_data_with_tags(datalake, tags)
     # Adding data to dataset is a time intensive task. 
     # Therefore it is recommended to run it asynchronously. 
@@ -117,7 +128,6 @@ def add_labels(
     )-> Union[Label, List[Label]]:
     """ Add labels to a dataset."""
 
-    # Get or create label 
     labels = [dataset_version.get_or_create_label(name=label) for label in labels]
     return labels
 
