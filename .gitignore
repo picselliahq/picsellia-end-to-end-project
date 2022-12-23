@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Noteboks
+notebooks/
+
+# datasets
+data/raw/
