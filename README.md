@@ -250,7 +250,11 @@ then, select the models that you want to compare as shown below:
 
 When you click on compare, this is what you should get: 
 
+![compare experiments results](/docs/compare-experiments-gif.gif)
 
+# 🚀 Deployment to production
+
+After having a close look into the performance and metrics of the different experiments, you are able to choose a winning experiment to export as model and deploy to production. 
 
 
 
