@@ -12,7 +12,6 @@ load_dotenv()
 API_TOKEN = os.getenv("API_TOKEN")
 ORGANIZATION_ID = os.getenv("ORGANIZATION_ID")
 
-
 # Project & data Directories
 ROOT_DIR = Path.cwd().resolve()
 RAW_DATA_DIR = ROOT_DIR / "data" / "raw"
@@ -54,8 +53,10 @@ EXPERIMENT_DESCRIPTION = "experiment using model efficientdet-d3"
 EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "conveyor-belt-dataset"
 
-
 # Trained models & weights directories
 MODELS_DIR = ROOT_DIR / "models" 
 ARTIFACTS_DIR = MODELS_DIR / "efficientdet-d3"
 ARTIFACTS_NAME = "efficientdet-d3-model"
+
+# Deployment 
+DEPLOYMENT_NAME = "energetic-cave"

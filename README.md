@@ -284,6 +284,23 @@ Once the deployment is executed, you should be forwarded to the deployment inter
 
 As long as you did not any inference requests yet, the deployment dashboard should be still empty. 
 
+# 🏹 Inference with the deployed model
+
+Once your have deployed your model to production 🚀, your are now able to make inference requests and benefit from the monitoring dashboard to track the performance of your model, avoid data drift, etc. 
+To do that, follow these steps: 
+
+- First add the needed configuration for the inference in the [config.py](config.py) file: 
+
+ ````python
+# Deployment
+DEPLOYMENT_NAME = "energetic-cave"
+TEST_DATA_DIR = RAW_DATA_DIR / "test"
+`````
+- Run this command in your terminal to make predictions: 
+
+````shell
+python inference.py
+````
 
 
 
