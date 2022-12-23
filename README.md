@@ -182,8 +182,34 @@ After filling the form, you should have such result as shown below:
 ### b. Using your custom trained model
 Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
  
-- Edit the [config.py](config.py) file: 
+- Add the configuration related to registering your model on Picsellia in the [config.py](config.py) file: 
+
 ````python
+# Model 
+MODEL_NAME = "custom-model-x"
+MODEL_DESCRIPTION = "A custom model-x description"
+
+# Trained models & weights directories
+MODELS_DIR = ROOT_DIR / "models" 
+ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
+ARTIFACTS_NAME = "custom-trained-model-artifacts"
+````
+- Register your **custom model** on Picsellia by running the following command: 
+````shell
+python register_model.py
+````
+ 
+ After running this command, you should have registered your model artifacts to Picsellia and once you navigate to the `Models Registry tab`, you should have something like this:
+
+![registered model](/docs/model.png)
+
+ By clicking on your model, you should have an overview on the metadata and parameters of your custom model available on Picsellia and ready to be used in the experiments and for further deployment.  
+
+![registered model](/docs/registered-model.png)
+
+- Create an experiment and make the necessary changes in the [config.py](config.py) file: 
+
+ ````python
 # Project 
 PROJECT_NAME = "your-project-name"
 
@@ -196,14 +222,8 @@ EXPERIMENT_NAME = "experiment-model-x"
 EXPERIMENT_DESCRIPTION = "experiment1 using model x"
 EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
-
-# Trained models & weights directories
-MODELS_DIR = ROOT_DIR / "models" 
-ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
-ARTIFACTS_NAME = "custom-trained-model-artifacts"
 ````
-- Create an experiment. 
-- Store your trained model artifacts on Picsellia and attach them to an experiment.
+
 - Run the following command to perform the steps described above: 
 ````shell
 python create_experiment.py

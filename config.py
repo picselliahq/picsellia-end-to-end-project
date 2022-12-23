@@ -44,11 +44,18 @@ LABELS = ["Energy_Tiffin","Energy_Regular"]
 PROJECT_NAME = "Conveyor-belt-project"
 
 # Model 
-MODEL_NAME = "custom-model-x"
+MODEL_NAME = "efficientdet-d3"
 MODEL_VERSION = 0
+MODEL_DESCRIPTION = "A custom efficientdet-d3 model"
 
 # Experiment 
-EXPERIMENT_NAME = "experiment-model-x"
-EXPERIMENT_DESCRIPTION = "experiment1 using model x"
+EXPERIMENT_NAME = "experiment-efficientdet-d3"
+EXPERIMENT_DESCRIPTION = "experiment using model efficientdet-d3"
 EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "conveyor-belt-dataset"
+
+
+# Trained models & weights directories
+MODELS_DIR = ROOT_DIR / "models" 
+ARTIFACTS_DIR = MODELS_DIR / "efficientdet-d3"
+ARTIFACTS_NAME = "efficientdet-d3-model"
