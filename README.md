@@ -224,7 +224,7 @@ EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
 ````
 
-- Run the following command to perform the steps described above: 
+- Run the following command to create an experiment using your custom model that you just registered: 
 ````shell
 python create_experiment.py
 ````
