@@ -29,11 +29,11 @@ source myvenv/bin/activate
 ## Setup the environment variables 
 
 Create a `.env` file in the root directory of this project and add to it your **API_TOKEN** 
-that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_ID/profile#token) and your **ORGANIZATION_ID** that you can retrieve from the url in the browser in this format: https://app.picsellia.com/ORGANIZATION_ID/dashboard
+that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_ID/profile#token) and your **ORGANIZATION_NAME** that you can retrieve from the organization settings (https://app.picsellia.com/ORGANIZATION_ID/settings#informations)
 
 ```
 API_TOKEN="YOUR_API_TOKEN"
-ORGANIZATION_ID="YOUR_ORGANIZATION_ID"
+ORGANIZATION_NAME="YOUR_ORGANIZATION_NAME"
 ```
 
 # 💾 Data management 
@@ -159,23 +159,28 @@ Once you have created your project, the first thing you need to do it to attach 
 
 ## 3. Create experiments
 
-### a. Using model from Picsellia's model hub 
+### a. Using a model from Picsellia's model hub 
 
 An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
 
-to create an experiment, navigate to your project interface and add a new experiment as shown below: 
+- To create an experiment, navigate to your project interface and add a new experiment as shown below: 
 
 ![create_experiment](/docs/create_experiment.png)
 
-Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
+- Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
 
 After filling the form, you should have such result as shown below: 
 
-![experiment](/docs/experiment.png)
+![experiment](/docs/efficientdet-d3-experiment.png)
 
-### b. Using your custom trained models
+- Once you have setup your experiment with the model and attached a dataset to it, you are all set to launch the training on Picsellia. To do that, navigate to the Launch tab under your experiment tab and you have two options: 
+  - Train on Picsellia using a `remote server` (recommended).
+  - Train on your own infrastructure by copying the command to run the the `training Docker image` already packaged by Picsellia for a straight forward use. 
+
+![launch training](/docs/efficientdet-d3-launch-training.png)
+
+### b. Using your custom trained model
 Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
-- Import your model to the model registry (private to your organization)
  
 - Edit the [config.py](config.py) file: 
 ````python
@@ -191,11 +196,40 @@ EXPERIMENT_NAME = "experiment-model-x"
 EXPERIMENT_DESCRIPTION = "experiment1 using model x"
 EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
+
+# Trained models & weights directories
+MODELS_DIR = ROOT_DIR / "models" 
+ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
+ARTIFACTS_NAME = "custom-trained-model-artifacts"
 ````
-- Run the following command: 
+- Create an experiment. 
+- Store your trained model artifacts on Picsellia and attach them to an experiment.
+- Run the following command to perform the steps described above: 
 ````shell
 python create_experiment.py
 ````
+
+## 4. Monitor your experiments 
+
+Picsellia gives you the advantage of tracking your model training metrics to be able to evaluate accurately its performance and robustness. 
+
+### a. View training logs 
+Once you launch your training, all you have to do is to navigate to the **logs tab** under your experiment. There you have an overview on the different metrics pre-configured by Picsellia and that you can customize to log your own metrics. 
+
+The figure below shows the logs of the model you trained on Picsellia to perform an object detection task: 
+
+![training logs](/docs/training-logs-gif.gif)
+
+### b. Compare experiments 
+Picesllia gives you the flexibility to easily launch multiple experiments with different models and most importantly, it gives you the capability to compare your experiments with minimal effort. 
+
+All you have to do is to click on experiments on your project interface, 
+then, select the models that you want to compare as shown below: 
+
+![compare experiment](/docs/compare-experiment.png)
+
+When you click on compare, this is what you should get: 
+
 
 
 
