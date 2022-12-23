@@ -29,7 +29,7 @@ source myvenv/bin/activate
 ## Setup the environment variables 
 
 Create a `.env` file in the root directory of this project and add to it your **API_TOKEN** 
-that you can retrieve it in your profile page on Picsellia and your **ORGANIZATION_ID** that you can retrieve from the url in the browser in this format: https://app.picsellia.com/ORGANIZATION_ID/dashboard
+that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_ID/profile#token) and your **ORGANIZATION_ID** that you can retrieve from the url in the browser in this format: https://app.picsellia.com/ORGANIZATION_ID/dashboard
 
 ```
 API_TOKEN="YOUR_API_TOKEN"
@@ -60,6 +60,21 @@ python upload_data.py
 ````
 
 If you choose to upload your data via the sdk, take into account to update the `config.py` file. In the [config.py](config.py) file you can precise the path to your data (e.g train, test, val) in your local machine, and the tags you want to use to identify your uploaded data. 
+````python 
+# Project & data Directories
+ROOT_DIR = Path.cwd().resolve()
+RAW_DATA_DIR = ROOT_DIR / "data" / "raw"
+TRAIN_DATA_DIR = RAW_DATA_DIR / "train"
+TEST_DATA_DIR = RAW_DATA_DIR / "test"
+VALID_DATA_DIR = RAW_DATA_DIR / "valid"
+
+# Data tags in the Datalake 
+TRAIN_TAG = "train"
+TEST_TAG = "test"
+VALID_TAG = "valid"
+LABEL_TAG_X = "label-x"
+LABEL_TAG_Y = "label-y"
+````
 
 ## 2. Create a dataset with data from the Datalake
 
@@ -144,6 +159,8 @@ Once you have created your project, the first thing you need to do it to attach 
 
 ## 3. Create experiments
 
+### a. Using model from Picsellia's model hub 
+
 An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
 
 to create an experiment, navigate to your project interface and add a new experiment as shown below: 
@@ -156,8 +173,29 @@ After filling the form, you should have such result as shown below:
 
 ![experiment](/docs/experiment.png)
 
+### b. Using your custom trained models
+Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
+- Import your model to the model registry (private to your organization)
+ 
+- Edit the [config.py](config.py) file: 
+````python
+# Project 
+PROJECT_NAME = "your-project-name"
 
+# Model 
+MODEL_NAME = "custom-model-x"
+MODEL_VERSION = 0
 
+# Experiment 
+EXPERIMENT_NAME = "experiment-model-x"
+EXPERIMENT_DESCRIPTION = "experiment1 using model x"
+EXPERIMENT_DATASET_VERSION = "train"
+EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
+````
+- Run the following command: 
+````shell
+python create_experiment.py
+````
 
 
 

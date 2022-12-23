@@ -39,3 +39,16 @@ DATASET_VERSION = "test"
 DATASET_VERSION_DESCRIPTION = "testing version"
 DATASET_TYPE = InferenceType.OBJECT_DETECTION
 LABELS = ["Energy_Tiffin","Energy_Regular"] 
+
+# Project 
+PROJECT_NAME = "Conveyor-belt-project"
+
+# Model 
+MODEL_NAME = "custom-model-x"
+MODEL_VERSION = 0
+
+# Experiment 
+EXPERIMENT_NAME = "experiment-model-x"
+EXPERIMENT_DESCRIPTION = "experiment1 using model x"
+EXPERIMENT_DATASET_VERSION = "train"
+EXPERIMENT_DATASET_NAME = "conveyor-belt-dataset"

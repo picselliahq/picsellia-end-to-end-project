@@ -130,3 +130,6 @@ dmypy.json
 
 # Noteboks
 notebooks/
+
+# datasets
+data/raw/
