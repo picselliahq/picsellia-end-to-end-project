@@ -254,12 +254,35 @@ When you click on compare, this is what you should get:
 
 # 🚀 Deployment to production
 
-After having a close look into the performance and metrics of the different experiments, you are able to choose a winning experiment to export as model and deploy to production. 
+After comparing your experiments and having a close look into the performance and metrics of the different models, you are able to choose a winning experiment to export as model and deploy to production. 
 
+To export your chosen experiment, you simply click on the button **Export as model** in the experiment logs interface as shown in the figure below: 
 
+![export as model](/docs/export-model.png)
 
+Once you export your model, you can find it under the `Model Regitry` tab. Thanks to Picsellia, you are able to have a visibility on the origin of your model e.g which dataset you used to train that model, model parameters, label map, etc... 
 
+![export as model](/docs/exported-model.png)
  
+The next step is to **deploy** your model to production. 
+
+With Picsellia 🥑, it is as easy as a button click! 
+
+By clicking on the button `Deploy` on the model interface, 
+you should select one of the deployment options: 
+- Deploy on Picsellia serving (recommended)
+- Connect your serving with Picsellia's APIs  
+- Monitoring only 
+
+![export as model](/docs/deployment-options.png)
+
+then enter a confidence threshold to filter predictions below and avoid noise.
+
+Once the deployment is executed, you should be forwarded to the deployment interface of your model as shown below: 
+
+![export as model](/docs/deployment.png)
+
+As long as you did not any inference requests yet, the deployment dashboard should be still empty. 
 
 
 
