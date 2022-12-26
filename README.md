@@ -29,11 +29,11 @@ source myvenv/bin/activate
 ## Setup the environment variables 
 
 Create a `.env` file in the root directory of this project and add to it your **API_TOKEN** 
-that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_ID/profile#token) and your **ORGANIZATION_ID** that you can retrieve from the url in the browser in this format: https://app.picsellia.com/ORGANIZATION_ID/dashboard
+that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_NAME/profile#token) and your **ORGANIZATION_NAME** that you can retrieve from the organization settings (https://app.picsellia.com/ORGANIZATION_NAME/settings#informations)
 
 ```
 API_TOKEN="YOUR_API_TOKEN"
-ORGANIZATION_ID="YOUR_ORGANIZATION_ID"
+ORGANIZATION_NAME="YOUR_ORGANIZATION_NAME"
 ```
 
 # 💾 Data management 
@@ -134,7 +134,7 @@ Then you will be able to annotate as shown below:
 
 ![annotation](/docs/annotation_tool.png)
 
-Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc. as shown below: 
+Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc, as shown below: 
 
 ![annotation](/docs/dataset_analytics.png)
 
@@ -144,7 +144,7 @@ After completing the data management workflow, you should be all set to create y
 
 ## 1. Create a project 
 
-To grant that you have an overview on the different experiments, you start by creating a project by navigating to the **Projects tab** as shown below: 
+To grant that you have an overview on the different experiments, you start by creating a project by navigating to the **Projects tab**, as shown below: 
 
 ![create_project](/docs/create_project.png)
 
@@ -159,26 +159,70 @@ Once you have created your project, the first thing you need to do it to attach 
 
 ## 3. Create experiments
 
-### a. Using model from Picsellia's model hub 
+### a. Using a model from Picsellia's model hub 
 
 An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
 
-to create an experiment, navigate to your project interface and add a new experiment as shown below: 
+- To create an experiment, navigate to your project interface and add a new experiment as shown below: 
 
 ![create_experiment](/docs/create_experiment.png)
 
-Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
+- Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
 
 After filling the form, you should have such result as shown below: 
 
-![experiment](/docs/experiment.png)
+![experiment](/docs/efficientdet-d3-experiment.png)
 
-### b. Using your custom trained models
+- Once you have setup your experiment with the model and attached a dataset to it, you are all set to launch the training on Picsellia. To do that, navigate to the Launch tab under your experiment tab and you have two options: 
+  - Train on Picsellia using a `remote server` (recommended).
+  - Train on your own infrastructure by copying the command to run the the `training Docker image` already packaged by Picsellia for a straight forward use. 
+
+![launch training](/docs/efficientdet-d3-launch-training.png)
+
+### b. Using your custom trained model
 Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
-- Import your model to the model registry (private to your organization)
  
-- Edit the [config.py](config.py) file: 
+- Add the configuration related to registering your model on Picsellia in the [config.py](config.py) file: 
+
 ````python
+# Model 
+MODEL_NAME = "custom-model-x"
+MODEL_DESCRIPTION = "A custom model-x description"
+
+# Trained models & weights directories
+MODELS_DIR = ROOT_DIR / "models" 
+ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
+ARTIFACTS_NAME = "custom-trained-model-artifacts"
+
+# Custom model parameters
+PARAM_1 = "param-1"
+PARAM_2 = "param-2"
+
+# Custom model framework 
+FRAMEWORK = Framework.TENSORFLOW
+
+# Labels 
+LABELS = ["label_1", "label_2"]
+
+# Inference type 
+DATASET_TYPE = InferenceType.OBJECT_DETECTION
+````
+- Register your **custom model** on Picsellia by running the following command: 
+````shell
+python register_model.py
+````
+ 
+ After running this command, you should have registered your model artifacts to Picsellia and once you navigate to the `Models Registry tab`, you should have something like this:
+
+![registered model](/docs/model.png)
+
+ By clicking on your model, you should have an overview on the metadata and parameters of your custom model available on Picsellia and ready to be used in the experiments and for further deployment.  
+
+![registered model](/docs/registered-model.png)
+
+- Create an experiment and make the necessary changes in the [config.py](config.py) file: 
+
+ ````python
 # Project 
 PROJECT_NAME = "your-project-name"
 
@@ -192,20 +236,97 @@ EXPERIMENT_DESCRIPTION = "experiment1 using model x"
 EXPERIMENT_DATASET_VERSION = "train"
 EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
 ````
-- Run the following command: 
+
+- Run the following command to create an experiment using your custom model that you just registered: 
 ````shell
 python create_experiment.py
 ````
 
+## 4. Monitor your experiments 
 
+Picsellia gives you the advantage of tracking your model training metrics to be able to evaluate accurately its performance and robustness. 
 
+### a. View training logs 
+Once you launch your training, all you have to do is to navigate to the **logs tab** under your experiment. There you have an overview on the different metrics pre-configured by Picsellia and that you can customize to log your own metrics. 
 
+The figure below shows the logs of the model you trained on Picsellia to perform an object detection task: 
 
+![training logs](/docs/training-logs-gif.gif)
+
+### b. Compare experiments 
+Picesllia gives you the flexibility to easily launch multiple experiments with different models and most importantly, it gives you the capability to compare your experiments with minimal effort. 
+
+All you have to do is to click on experiments on your project interface, 
+then, select the models that you want to compare as shown below: 
+
+![compare experiment](/docs/compare-experiment.png)
+
+When you click on compare, this is what you should get: 
+
+![compare experiments results](/docs/compare-experiments-gif.gif)
+
+# 🚀 Deployment to production
+
+After comparing your experiments and having a close look into the performance and metrics of the different models, you are able to choose a winning experiment to export as model and deploy to production. 
+
+To export your chosen experiment, you simply click on the button **Export as model** in the experiment logs interface as shown in the figure below: 
+
+![export as model](/docs/export-model.png)
+
+Once you export your model, you can find it under the `Model Regitry` tab. Thanks to Picsellia, you are able to have a visibility on the origin of your model e.g which dataset you used to train that model, model parameters, label map, etc... 
+
+![export as model](/docs/exported-model.png)
  
+The next step is to **deploy** your model to production. 
 
+With Picsellia 🥑, it is as easy as a button click! 
 
+By clicking on the button `Deploy` on the model interface, 
+you should select one of the deployment options: 
+- Deploy on Picsellia serving (recommended)
+- Connect your serving with Picsellia's APIs  
+- Monitoring only 
 
+![export as model](/docs/deployment-options.png)
 
+Enter a confidence threshold to filter predictions below and avoid noise.
+
+Once the deployment is executed, you should be forwarded to the deployment interface of your model as shown below: 
+
+![export as model](/docs/deployment.png)
+
+As long as you did not any inference requests yet, the deployment dashboard should be still empty. 
+
+# 🏹 Inference with the deployed model
+
+## 1. Make inference requests 
+Once your have deployed your model to production 🚀, your are now able to make inference requests and benefit from the monitoring dashboard to track the performance of your model, avoid data drift, etc. 
+To do that, follow these steps: 
+
+- First add the needed configuration for the inference in the [config.py](config.py) file: 
+
+ ````python
+# Deployment
+DEPLOYMENT_NAME = "energetic-cave"
+TEST_DATA_DIR = RAW_DATA_DIR / "test"
+`````
+- Run this command in your terminal to make predictions: 
+
+````shell
+python inference.py
+````
+## 2. Review predictions  
+After making your prediction requests, you can leverage Picsellia deployments dashboard to monitor your deployed models. From the dashboard you have an overview on a variety of metrics e.g inference latency, heatmap, outlier score, KS drift, etc. 
+
+To be able to compute these prediction metrics, the predictions made has to be first reviewed. Navigate to to the **Predictions** tab under the deployment interface. By hovering on the images, click on the button **review**, you will be then forwarded to an annotation-like interface, as shown below: 
+
+![review prediction](/docs/review-prediction.png)
+
+When reviewing the predictions you can adjust the bounding boxes, correct a prediction if it is wrong or save the results if you are satisfied with the prediction. Make sure to click on the button **Save** to save your changes. 
+
+![reviewed prediction](/docs/reviewed-prediction.png)
+
+Once you are done with the predictions review, you can leverage the prediction dataset to create a **`Feedback Loop`**. 
 
 
 
