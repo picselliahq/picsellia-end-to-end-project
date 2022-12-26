@@ -10,7 +10,7 @@ load_dotenv()
 
 # Environment variables
 API_TOKEN = os.getenv("API_TOKEN")
-ORGANIZATION_ID = os.getenv("ORGANIZATION_ID")
+ORGANIZATION_NAME = os.getenv("ORGANIZATION_NAME")
 
 # Project & data Directories
 ROOT_DIR = Path.cwd().resolve()

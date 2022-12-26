@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Connect to Picsellia. 
     client = Client(
     api_token=config.API_TOKEN,
-    organization_id=config.ORGANIZATION_ID
+    ORGANIZATION_NAME=config.ORGANIZATION_NAME
     )
 
     # Get deployment by name.
