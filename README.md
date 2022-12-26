@@ -29,7 +29,7 @@ source myvenv/bin/activate
 ## Setup the environment variables 
 
 Create a `.env` file in the root directory of this project and add to it your **API_TOKEN** 
-that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_ID/profile#token) and your **ORGANIZATION_NAME** that you can retrieve from the organization settings (https://app.picsellia.com/ORGANIZATION_ID/settings#informations)
+that you can retrieve it in your profile page on Picsellia (https://app.picsellia.com/ORGANIZATION_NAME/profile#token) and your **ORGANIZATION_NAME** that you can retrieve from the organization settings (https://app.picsellia.com/ORGANIZATION_NAME/settings#informations)
 
 ```
 API_TOKEN="YOUR_API_TOKEN"
@@ -134,7 +134,7 @@ Then you will be able to annotate as shown below:
 
 ![annotation](/docs/annotation_tool.png)
 
-Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc. as shown below: 
+Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc, as shown below: 
 
 ![annotation](/docs/dataset_analytics.png)
 
@@ -144,7 +144,7 @@ After completing the data management workflow, you should be all set to create y
 
 ## 1. Create a project 
 
-To grant that you have an overview on the different experiments, you start by creating a project by navigating to the **Projects tab** as shown below: 
+To grant that you have an overview on the different experiments, you start by creating a project by navigating to the **Projects tab**, as shown below: 
 
 ![create_project](/docs/create_project.png)
 
@@ -193,6 +193,19 @@ MODEL_DESCRIPTION = "A custom model-x description"
 MODELS_DIR = ROOT_DIR / "models" 
 ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
 ARTIFACTS_NAME = "custom-trained-model-artifacts"
+
+# Custom model parameters
+PARAM_1 = "param-1"
+PARAM_2 = "param-2"
+
+# Custom model framework 
+FRAMEWORK = Framework.TENSORFLOW
+
+# Labels 
+LABELS = ["label_1", "label_2"]
+
+# Inference type 
+DATASET_TYPE = InferenceType.OBJECT_DETECTION
 ````
 - Register your **custom model** on Picsellia by running the following command: 
 ````shell
@@ -276,7 +289,7 @@ you should select one of the deployment options:
 
 ![export as model](/docs/deployment-options.png)
 
-then enter a confidence threshold to filter predictions below and avoid noise.
+Enter a confidence threshold to filter predictions below and avoid noise.
 
 Once the deployment is executed, you should be forwarded to the deployment interface of your model as shown below: 
 
@@ -286,6 +299,7 @@ As long as you did not any inference requests yet, the deployment dashboard shou
 
 # 🏹 Inference with the deployed model
 
+## 1. Make inference requests 
 Once your have deployed your model to production 🚀, your are now able to make inference requests and benefit from the monitoring dashboard to track the performance of your model, avoid data drift, etc. 
 To do that, follow these steps: 
 
@@ -301,9 +315,18 @@ TEST_DATA_DIR = RAW_DATA_DIR / "test"
 ````shell
 python inference.py
 ````
+## 2. Review predictions  
+After making your prediction requests, you can leverage Picsellia deployments dashboard to monitor your deployed models. From the dashboard you have an overview on a variety of metrics e.g inference latency, heatmap, outlier score, KS drift, etc. 
 
+To be able to compute these prediction metrics, the predictions made has to be first reviewed. Navigate to to the **Predictions** tab under the deployment interface. By hovering on the images, click on the button **review**, you will be then forwarded to an annotation-like interface, as shown below: 
 
+![review prediction](/docs/review-prediction.png)
 
+When reviewing the predictions you can adjust the bounding boxes, correct a prediction if it is wrong or save the results if you are satisfied with the prediction. Make sure to click on the button **Save** to save your changes. 
+
+![reviewed prediction](/docs/reviewed-prediction.png)
+
+Once you are done with the predictions review, you can leverage the prediction dataset to create a **`Feedback Loop`**. 
 
 
 

@@ -1,6 +1,4 @@
 from picsellia import Client
-from picsellia.types.enums import InferenceType
-from picsellia.sdk.model import Framework
 
 import config
 
@@ -15,26 +13,26 @@ if __name__ == "__main__":
     # Create a new model. 
     my_custom_model = client.create_model(
         name=config.MODEL_NAME,
-        type=InferenceType.OBJECT_DETECTION,
-        framework=Framework.TENSORFLOW,
+        type=config.DATASET_TYPE,
+        framework=config.FRAMEWORK,
         description=config.MODEL_DESCRIPTION
     )
 
     # Model parameters 
     parameters = {
-        "steps": 1000,
-        "lr_type": "exponential_decay",
-        "batch_size": 4,
-        "decay_steps": 500,
-        "decay_factor": "0.9",
-        "learning_rate": 0.001,
-        "annotation_type": "rectangle" 
+        "steps": config.STEPS,
+        "lr_type": config.LR_TYPE,
+        "batch_size": config.BATCH_SIZE,
+        "decay_steps": config.DECAY_STEPS,
+        "decay_factor": config.DECAY_FACTOR,
+        "learning_rate": config.LEARNING_RATE,
+        "annotation_type": config.ANNOTATION_TYPE 
     }
 
     # It's important that the labels keys starts at "1".
     labels = { 
-        "1": "Energy_Tiffin",
-        "2": "Energy_Regular"
+        "1": config.LABELS[0],
+        "2": config.LABELS[1]
     }
 
     # Create a model version  

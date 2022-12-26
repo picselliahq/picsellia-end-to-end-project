@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+from picsellia.sdk.model import Framework
 from picsellia.types.enums import InferenceType
-
 
 # Parses the .env file and loads all the variables found as environment variables.
 load_dotenv()
@@ -57,6 +57,18 @@ EXPERIMENT_DATASET_NAME = "conveyor-belt-dataset"
 MODELS_DIR = ROOT_DIR / "models" 
 ARTIFACTS_DIR = MODELS_DIR / "efficientdet-d3"
 ARTIFACTS_NAME = "efficientdet-d3-model"
+
+# Custom model parameters 
+STEPS = 1000
+LR_TYPE = "exponential_decay"
+BATCH_SIZE = 4
+DECAY_STEPS = 500
+DECAY_FACTOR = 0.9
+LEARNING_RATE = 0.001
+ANNOTATION_TYPE = "rectangle"
+
+# Custom model framework 
+FRAMEWORK = Framework.TENSORFLOW
 
 # Deployment 
 DEPLOYMENT_NAME = "energetic-cave"
