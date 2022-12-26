@@ -326,7 +326,29 @@ When reviewing the predictions you can adjust the bounding boxes, correct a pred
 
 ![reviewed prediction](/docs/reviewed-prediction.png)
 
-Once you are done with the predictions review, you can leverage the prediction dataset to create a **`Feedback Loop`**. 
+ The **Accepted** tag on the images help you recognize the images that were reviewed from the once that were not reviewed. 
+
+
+# 🔁 Continuous training and deployment
+
+## 1. Feedback Loop 
+
+Once you are done with the predictions review, you can leverage the prediction dataset to enable the **`Feedback Loop`**.
+
+You can select a dataset version, all predictions coming from your deployment will be then sent to your dataset version once they are reviewed. 
+
+The setup is done in the **Settings tab** under the deployments interface, as shown below: 
+
+![feedback loop](/docs/feedback-loop.png)
+
+The next step is to submit the reviewed prediction images to the **Feedback Loop**. To do that, navigate to the **Predictions tab** and select all or a subset of the images and click on **Submit to Feedback-Loop** button. 
+
+![submit feedback loop](/docs/submit-feedback-loop.png)
+
+
+
+
+
 
 
 
