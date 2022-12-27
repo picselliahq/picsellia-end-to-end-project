@@ -159,7 +159,7 @@ Once you have created your project, the first thing you need to do it to attach 
 
 ## 3. Create experiments
 
-### a. Using a model from Picsellia's model hub 
+### Using a model from Picsellia's model hub 
 
 An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
 
@@ -179,68 +179,6 @@ After filling the form, you should have such result as shown below:
 
 ![launch training](/docs/efficientdet-d3-launch-training.png)
 
-### b. Using your custom trained model
-Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
- 
-- Add the configuration related to registering your model on Picsellia in the [config.py](config.py) file: 
-
-````python
-# Model 
-MODEL_NAME = "custom-model-x"
-MODEL_DESCRIPTION = "A custom model-x description"
-
-# Trained models & weights directories
-MODELS_DIR = ROOT_DIR / "models" 
-ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
-ARTIFACTS_NAME = "custom-trained-model-artifacts"
-
-# Custom model parameters
-PARAM_1 = "param-1"
-PARAM_2 = "param-2"
-
-# Custom model framework 
-FRAMEWORK = Framework.TENSORFLOW
-
-# Labels 
-LABELS = ["label_1", "label_2"]
-
-# Inference type 
-DATASET_TYPE = InferenceType.OBJECT_DETECTION
-````
-- Register your **custom model** on Picsellia by running the following command: 
-````shell
-python register_model.py
-````
- 
- After running this command, you should have registered your model artifacts to Picsellia and once you navigate to the `Models Registry tab`, you should have something like this:
-
-![registered model](/docs/model.png)
-
- By clicking on your model, you should have an overview on the metadata and parameters of your custom model available on Picsellia and ready to be used in the experiments and for further deployment.  
-
-![registered model](/docs/registered-model.png)
-
-- Create an experiment and make the necessary changes in the [config.py](config.py) file: 
-
- ````python
-# Project 
-PROJECT_NAME = "your-project-name"
-
-# Model 
-MODEL_NAME = "custom-model-x"
-MODEL_VERSION = 0
-
-# Experiment 
-EXPERIMENT_NAME = "experiment-model-x"
-EXPERIMENT_DESCRIPTION = "experiment1 using model x"
-EXPERIMENT_DATASET_VERSION = "train"
-EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
-````
-
-- Run the following command to create an experiment using your custom model that you just registered: 
-````shell
-python create_experiment.py
-````
 
 ## 4. Monitor your experiments 
 
