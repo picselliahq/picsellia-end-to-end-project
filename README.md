@@ -6,7 +6,7 @@ The following are the steps which are covered within this project:
 - 📈 Model training & monitoring 
 - 🚀 Deployment to production
 - 🏹 Inference with the deployed model 
-- 🔁 Continuous training and deployment
+- 🔁 Continuous training and continuous deployment
 
 
 ## Setup a virtual environment 
@@ -159,7 +159,7 @@ Once you have created your project, the first thing you need to do it to attach 
 
 ## 3. Create experiments
 
-### a. Using a model from Picsellia's model hub 
+### Using a model from Picsellia's model hub 
 
 An experiment is a great way to keep track on the traceability of your training. For instance, through the experiment you can have an overview on which model you used for the training, which dataset and dataset version you trained on, as well as the hyperparameters of your model, etc.  
 
@@ -179,68 +179,6 @@ After filling the form, you should have such result as shown below:
 
 ![launch training](/docs/efficientdet-d3-launch-training.png)
 
-### b. Using your custom trained model
-Supposing that you have trained your own model and you want to benefit from the capabilities of Picsellia to track your model metrics and launch different experiments with different dataset versions based on your trained model, you can follow these steps: 
- 
-- Add the configuration related to registering your model on Picsellia in the [config.py](config.py) file: 
-
-````python
-# Model 
-MODEL_NAME = "custom-model-x"
-MODEL_DESCRIPTION = "A custom model-x description"
-
-# Trained models & weights directories
-MODELS_DIR = ROOT_DIR / "models" 
-ARTIFACTS_DIR = MODELS_DIR / "custom-model-x"
-ARTIFACTS_NAME = "custom-trained-model-artifacts"
-
-# Custom model parameters
-PARAM_1 = "param-1"
-PARAM_2 = "param-2"
-
-# Custom model framework 
-FRAMEWORK = Framework.TENSORFLOW
-
-# Labels 
-LABELS = ["label_1", "label_2"]
-
-# Inference type 
-DATASET_TYPE = InferenceType.OBJECT_DETECTION
-````
-- Register your **custom model** on Picsellia by running the following command: 
-````shell
-python register_model.py
-````
- 
- After running this command, you should have registered your model artifacts to Picsellia and once you navigate to the `Models Registry tab`, you should have something like this:
-
-![registered model](/docs/model.png)
-
- By clicking on your model, you should have an overview on the metadata and parameters of your custom model available on Picsellia and ready to be used in the experiments and for further deployment.  
-
-![registered model](/docs/registered-model.png)
-
-- Create an experiment and make the necessary changes in the [config.py](config.py) file: 
-
- ````python
-# Project 
-PROJECT_NAME = "your-project-name"
-
-# Model 
-MODEL_NAME = "custom-model-x"
-MODEL_VERSION = 0
-
-# Experiment 
-EXPERIMENT_NAME = "experiment-model-x"
-EXPERIMENT_DESCRIPTION = "experiment1 using model x"
-EXPERIMENT_DATASET_VERSION = "train"
-EXPERIMENT_DATASET_NAME = "experiment-dataset-name"
-````
-
-- Run the following command to create an experiment using your custom model that you just registered: 
-````shell
-python create_experiment.py
-````
 
 ## 4. Monitor your experiments 
 
@@ -293,7 +231,7 @@ Enter a confidence threshold to filter predictions below and avoid noise.
 
 Once the deployment is executed, you should be forwarded to the deployment interface of your model as shown below: 
 
-![export as model](/docs/deployment.png)
+![export as model](/docs/deploy-gif.gif)
 
 As long as you did not any inference requests yet, the deployment dashboard should be still empty. 
 
@@ -306,17 +244,44 @@ To do that, follow these steps:
 - First add the needed configuration for the inference in the [config.py](config.py) file: 
 
  ````python
-# Deployment
+# Deployment & Inference
 DEPLOYMENT_NAME = "energetic-cave"
-TEST_DATA_DIR = RAW_DATA_DIR / "test"
+INFERENCE_DATA_DIR = RAW_DATA_DIR / "test"
 `````
 - Run this command in your terminal to make predictions: 
 
 ````shell
 python inference.py
 ````
+
+You can see in real time the inference details via the *Dashboard** interface e.g Total inferences, mean latency, the model used in production as well as the last predictions. 
+
+![inference](/docs/inference-gif.gif)
+
+The metrics displayed in the dashboard are updated in real-time according to the predictions made by the model.
+
+# 🔁 Continuous training (CT) and continuous deployment (CD)
+
+Continuous training and continuous deployment are at the core functionalities of MLOps. They stand respectively for automating the re-training of the model and the automated deployment of that re-trained model in production. These two concepts are data centric. So if the right metrics are set for the monitoring, the model performance will likely be enhanced. This approach relies on re-training the previous model with production data to prevent data and concept drift relying on human supervision. 
+
+With Picsellia 🥑 this process is made easy and effective!
+
+## 1. Feedback Loop setup
+
+The data in production can be different from the data you trained the model on, and so your models begin to decay. To prevent that, it is recommended to enrich the training dataset with data that comes from production, to keep models up to date. 
+
+By setting up a **`Feedback Loop`** before the inference, you make sure that the production data is added to the dataset version used for training after reviewing the predictions by a human. 
+
+
+To do that, navigate to the **Settings tab** under the deployment interface of your model. You can select a dataset version, all predictions coming from your deployment will be then incorporated with your dataset version once they are **reviewed** ans **submitted** to the Feedback Loop. 
+ 
+The setup form is shown below: 
+
+![feedback loop](/docs/feedback-loop-setup.png)
+
 ## 2. Review predictions  
-After making your prediction requests, you can leverage Picsellia deployments dashboard to monitor your deployed models. From the dashboard you have an overview on a variety of metrics e.g inference latency, heatmap, outlier score, KS drift, etc. 
+
+After activating the Feedback Loop and making your prediction requests, you can leverage Picsellia deployments dashboard to monitor your deployed models performance. From the dashboard you have an overview on a variety of metrics e.g inference latency, heatmap, outlier score, KS drift, etc. 
 
 To be able to compute these prediction metrics, the predictions made has to be first reviewed. Navigate to to the **Predictions** tab under the deployment interface. By hovering on the images, click on the button **review**, you will be then forwarded to an annotation-like interface, as shown below: 
 
@@ -326,7 +291,53 @@ When reviewing the predictions you can adjust the bounding boxes, correct a pred
 
 ![reviewed prediction](/docs/reviewed-prediction.png)
 
-Once you are done with the predictions review, you can leverage the prediction dataset to create a **`Feedback Loop`**. 
+ The **Accepted** badge on the images helps you recognize the images that were reviewed from the once that were not reviewed yet. 
 
+## 3. Submit data to the Feedback Loop  
 
+Once you are done with the predictions review, you can leverage the prediction dataset to enable the **`Feedback Loop`**.
+
+Therefore, you need to submit the reviewed prediction images to the **Feedback Loop**. To do that, navigate to the **Predictions tab** and select all or a subset of the images and click on **Submit to Feedback-Loop** button. 
+
+![submit feedback loop](/docs/submit-feedback-loop.png)
+
+## 4. Monitoring models in production 
+
+How do you ensure your models continue to perform at their best? By planning for and incorporating a monitoring system that supports the iteration and improvement of your models. 
+
+Picsellia helps you monitor easily not only your model performance but also the data quality. By calculating the needed metrics and displaying them in the **dashboard** on the deployment interface, as illustrated below: 
+
+![monitoring in production](/docs/monitoring.gif)
+
+## 3. Continuous training (CT) 
+
+When enabling the Feedback Loop, it makes sense to enable afterwards the **`Continuous Training`** as well, to use the dataset which was submitted to the feedback loop to re-train the model used currently in production. 
+
+The main idea of this loop is to ensure that the model is always improving itself by leveraging human-reviewed production data.
+
+To set up the Continuous Training, navigate to the **Settings tab** under the deployment interface and fill the needed information, as shown below: 
+
+![Continuous training](/docs/continuous-training.gif)
+
+You need to select the dataset which you have selected previously in the Feedback Loop set up, to grant that the training will be with the data submitted from the production system. Then, set as a trigger the Feedback loop and set a threshold above which the continuous training should take place.  
+
+## 4. Continuous Deployment (CD)
+To automate your computer vision pipeline, the last step to close the loop is to activate the **`Continuous Deployment`**. 
+
+With Picsellia 🥑 there are three possible ways to deploy the new model resulting from the Continuous Training that are the following: 
+- Deploy shadow 
+- deploy champion 
+- Deploy manually 
+
+To set up the Continuous Deployment, navigate to the **Settings tab** under the deployment interface and set it up as illustrated below:
+
+![Continuous deployment](/docs/continuous-deployment.gif)
+
+## 4. Alerts
+
+To iterate on your models, Picsellia offers you a monitoring system that provides feedback. The goal of monitoring is to alert you to issues with your model (hopefully with enough time to take action before a problem occurs).
+
+To set up the alerts, navigate to the **Settings tab** under the deployment interface and set it up as illustrated below: 
+
+![Alerts](/docs/alerts.gif)
 

@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Connect to Picsellia. 
     client = Client(
     api_token=config.API_TOKEN,
-    ORGANIZATION_NAME=config.ORGANIZATION_NAME
+    organization_name=config.ORGANIZATION_NAME
     )
 
     # Get deployment by name.
@@ -58,7 +58,7 @@ if __name__ == "__main__":
         "tag": "Cartons"     
     }
     
-    images_folder = config.TEST_DATA_DIR
+    images_folder = config.INFERENCE_DATA_DIR
 
     images_path = Path(images_folder).glob('*.jpg')
 

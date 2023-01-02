@@ -70,5 +70,6 @@ ANNOTATION_TYPE = "rectangle"
 # Custom model framework 
 FRAMEWORK = Framework.TENSORFLOW
 
-# Deployment 
-DEPLOYMENT_NAME = "energetic-cave"
+# Deployment & Inference 
+DEPLOYMENT_NAME = "scalding-version"
+INFERENCE_DATA_DIR = VALID_DATA_DIR
