@@ -132,7 +132,7 @@ Supposing that you have the annotation files available on your local machine res
 
 Then you will be able to annotate as shown below: 
 
-![annotation](/docs/annotation_tool.png)
+![annotation](/docs/annotation-tool.png)
 
 Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc, as shown below: 
 
@@ -285,7 +285,7 @@ After activating the Feedback Loop and making your prediction requests, you can 
 
 To be able to compute these prediction metrics, the predictions made has to be first reviewed. Navigate to to the **Predictions** tab under the deployment interface. By hovering on the images, click on the button **review**, you will be then forwarded to an annotation-like interface, as shown below: 
 
-![review prediction](/docs/review-prediction.png)
+![review prediction](/docs/review-predictions.png)
 
 When reviewing the predictions you can adjust the bounding boxes, correct a prediction if it is wrong or save the results if you are satisfied with the prediction. Make sure to click on the button **Save** to save your changes. 
 
@@ -319,9 +319,25 @@ To set up the Continuous Training, navigate to the **Settings tab** under the de
 
 ![Continuous training](/docs/continuous-training.gif)
 
-You need to select the dataset which you have selected previously in the Feedback Loop set up, to grant that the training will be with the data submitted from the production system. Then, set as a trigger the Feedback loop and set a threshold above which the continuous training should take place.  
+You need to select the dataset which you have selected previously in the Feedback Loop set up, to grant that the training will be with the data submitted from the production system. Then, set as a trigger the Feedback Loop and set a threshold above which the continuous training should take place.  
+
+After submitting to the Feedback Loop a number of the reviewed prediction images above the threshold, the CT will be automatically launched. This will result in creating a new experiment and the export of that experiment as a new  model version, that you can access in the **Models > Registry** under the model which was used in the original experiment. 
+
+![Shadow model](/docs/shadow.png)
+
+Once the CT is over and you have a shadow model, it is time to make a new inference request and it will automatically make predictions using both the champion model and shadow model. 
+
+To be able to compute the metrics of the shadow model to measure its performance, navigate to the **Predictions tab** there you can easily switch between the champion model and shadow model to review their predictions, as shown below: 
+
+![Shadow model prediction review](/docs/shadow_review_pred.gif)
+
+Once you are done with the review of both the prediction of the shadow model and champion model, submit your reviewed images to the Feedback loop and then you will be able to see the metrics of the shadow model as well on the dashboard, as illustrated below: 
+
+![Shadow model metrics](/docs/shadow-metrics.gif)
+
 
 ## 4. Continuous Deployment (CD)
+
 To automate your computer vision pipeline, the last step to close the loop is to activate the **`Continuous Deployment`**. 
 
 With Picsellia 🥑 there are three possible ways to deploy the new model resulting from the Continuous Training that are the following: 
@@ -332,6 +348,12 @@ With Picsellia 🥑 there are three possible ways to deploy the new model result
 To set up the Continuous Deployment, navigate to the **Settings tab** under the deployment interface and set it up as illustrated below:
 
 ![Continuous deployment](/docs/continuous-deployment.gif)
+
+It is recommended to choose the option **Deploy shadow**, as it grants that the model which will be deployed to production is reviewed by a human and its performance exceeds the current deployed model. 
+If it is the case, you need to click on the button **Promote** so that the shadow model is deployed to production. 
+
+If you find that the metrics of the shadow model are better than the champion model, click on **Promote**. By doing that, the shadow model will be deployed to production.
+
 
 ## 4. Alerts
 
