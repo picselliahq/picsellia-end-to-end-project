@@ -132,7 +132,7 @@ Supposing that you have the annotation files available on your local machine res
 
 Then you will be able to annotate as shown below: 
 
-![annotation](/docs/annotation_tool.png)
+![annotation](/docs/annotation-tool.png)
 
 Once your dataset is fully annotated, you can leverage the **Analytics tab** to have an overview on the different metrics e.g data distribution, dataset balance, etc, as shown below: 
 
@@ -285,7 +285,7 @@ After activating the Feedback Loop and making your prediction requests, you can 
 
 To be able to compute these prediction metrics, the predictions made has to be first reviewed. Navigate to to the **Predictions** tab under the deployment interface. By hovering on the images, click on the button **review**, you will be then forwarded to an annotation-like interface, as shown below: 
 
-![review prediction](/docs/review-prediction.png)
+![review prediction](/docs/review-predictions.png)
 
 When reviewing the predictions you can adjust the bounding boxes, correct a prediction if it is wrong or save the results if you are satisfied with the prediction. Make sure to click on the button **Save** to save your changes. 
 
