@@ -148,13 +148,11 @@ After completing the data management workflow, you should be all set to create y
 
 ## 1. Create a project 
 
-Start by creating a project by navigating to the **Projects tab**, as shown below: 
-
-![create_project](/docs/create_project.png)
+Start by creating a project by navigating to the **Projects tab**.
 
 Click on **New project** and fill in the needed information. Then choose who you want to collaborate with on this project, as shown below: 
 
-![project](/docs/project.png)
+![project](/docs/create-project.gif)
 
 ## 2. Attach a dataset to your project 
 Once you have created your project, the first thing you need to do is to attach a Dataset to it by choosing a dataset versions that will be used for training. You can do that by navigating to your project interface as shown below: 
@@ -169,7 +167,7 @@ An experiment is a great way to ensure traceability of your training. For instan
 
 - To create an experiment, navigate to your project interface and add a new experiment as shown below: 
 
-![create_experiment](/docs/create_experiment.png)
+![create_experiment](/docs/create-experiment.gif)
 
 - Give your experiment a name (as a recommendation, indicate the model you used in your experiment name), choose a base architecture either from your organization or from the public models hub and choose a dataset version. You can also edit the hyperparameters of your chosen model. 
 
