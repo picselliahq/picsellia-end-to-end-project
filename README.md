@@ -50,7 +50,7 @@ By storing all your data in the Datalake, you can take advantage from the follow
 - Filter and modify your data easily via the UI.
 - Import your data from a third party data storage service. 
 
-![datalake](/docs/datalake.png)
+![datalake](/docs/datalake-overview.gif)
 
 You can upload your data to the Datalake in two ways: 
 - Via Picsellia platform UI by navigating to the Datalake tab and following the steps after clicking the button **upload data**. 
@@ -84,7 +84,7 @@ Since you have added tags when uploading your data to the Datalake, now you can 
 To do that, you can follow either of the following ways: 
 - Through Picsellia's platform UI using the **query language** to select data with the tags that you precised and then by clicking on **Create dataset** as shown below:
 
-![create dataset](/docs/create_dataset.png)
+![create dataset](/docs/create-dataset.gif)
 
 - Via Picsellia's Python SDK by doing the necessary configuration in the [config.py](config.py) file. The most important configurations to note are the **TAGS**, **DATASET_VERSION**, **DATASET_TYPE**, **LABELS**: 
 ````python
@@ -111,7 +111,9 @@ One thing to note about the **DATASET_TYPE** is that Picsellia supports the foll
 DATASET_TYPE = InferenceType.OBJECT_DETECTION
 ````
 
-After doing the described steps to create three dataset versions: **train**, **test** and **valid**, this is the result you should get by navigating to the **Datasets** tab on Picsellia:
+Create three dataset versions: **train**, **test** and **valid**. The training set is used to fit the model parameters, the validation set is used to tune model hyperparameters. Finally, we use the test set to evaluate the best model.
+
+This is the result you should get by navigating to the **Datasets** tab on Picsellia after creating the three dataset versions, as described:
 
 ![datasets](/docs/datasets.png)
 
@@ -126,9 +128,11 @@ Supposing that you have the annotation files available on your local machine res
 ![annotation](/docs/import_annotations.png)
 
  - **If you do not have the annotations:**
-  Picsellia has its annotation tool. You can use it to easily annotate your data from scratch. By navigating to the dataset version, once you hover an image, you can click on **Annotate** and you will be landing on the annotation tool. But first, make sure to set the labels before you do the annotations by navigating to the **settings** tab in the dataset version you are in and add the labels as shown below: 
+  Picsellia has its annotation tool. You can use it to easily annotate your data from scratch. By navigating to the dataset version, once you hover an image, you can click on **Annotate** and you will be landing on the annotation tool. 
+  
+ First, make sure to set the labels before you do the annotations by navigating to the **settings** tab in the dataset version you are in and add the labels as shown below: 
 
-![annotation](/docs/labels.png)
+![labels creation](/docs/dataset-labels.gif)
 
 Then you will be able to annotate as shown below: 
 
@@ -194,9 +198,9 @@ The figure below shows the logs of the model you trained on Picsellia to perform
 ![training logs](/docs/training-logs-gif.gif)
 
 ### b. Compare experiments 
-Picellia gives you the flexibility to easily launch multiple experiments with different models and most importantly, it allows you to compare your experiments with minimal effort. 
+Picsellia gives you the flexibility to easily launch multiple experiments with different models and most importantly, it allows you to compare your experiments with minimal effort. 
 
-All you have to do is go to your Experiment List from by clicking the caret at the top-left of the screen or from your project page, 
+All you have to do, is go to your **experiment list** form by clicking the caret at the top-left of the screen or from your project page, 
 then select the models that you want to compare as shown below: 
 
 ![compare experiment](/docs/compare-experiment.png)
