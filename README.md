@@ -245,7 +245,7 @@ As long as you did not make any inference requests, the deployment dashboard sho
 Once your have deployed your model to production 🚀, your are now able to make inference requests and benefit from the monitoring dashboard to track the performance of your model, avoid data drift, etc. 
 To do that, follow these steps: 
 
-- First add the needed configuration for the inference in the [config.py](config.py) file: 
+- First add the needed configuration for the inference in the [config.py](config.py) file. You need to copy the deployment name that you find on the platform and precise the directory of the images that you will do the inference with.   
 
  ````python
 # Deployment & Inference
@@ -325,8 +325,17 @@ To set up the Continuous Training, navigate to the **Settings tab** under the de
 
 You need to select the dataset which you have selected previously in the Feedback Loop set up, to grant that the training will be with the data submitted from the production system. Then, set as a trigger the Feedback Loop and set a threshold above which the continuous training should take place.  
 
-After submitting to the Feedback Loop a number of the reviewed prediction images above the threshold, the CT will be automatically launched. This will result in creating a new experiment (which name is prefixed with the name of your deployment) and the export of that experiment as a new  model version, that you can access in the **Models > Registry** under the model which was used in the original experiment.  
+This is how the deployment dashboard looks like after activating the **continuous training**: 
 
+![Continuous training active](/docs/CT-setup.png)
+
+After submitting to the Feedback Loop a number of the reviewed prediction images above the threshold, the CT will be automatically launched. This will result in creating a new experiment (which name is prefixed with the name of your deployment), as shown below in the two first experiments rows: 
+
+![shadow model experiment](/docs/shadow-experiment.png)
+
+What will also happen in the background of the CT, is the export of these experiments as new model versions (version 1.0 and version 2.0), that you can access in the **Models > Registry** under the model which was used in the original experiment (version 0.0), as shown below: 
+
+![shadow models](/docs/shadow-models.png)
 
 ## 6. Continuous Deployment (CD)
 
